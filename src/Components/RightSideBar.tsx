@@ -55,7 +55,7 @@ export default function RightSideBar({
             navigate("/login");
             localStorage.setItem("isRegistered", "false");
           }}
-          className="absolute bottom-2 left-4 cursor-pointer bg-teal-400 text-white py-2 px-4 rounded-md hover:bg-teal-500 transition-colors duration-150 w-[calc(100%-32px)]"
+          className="absolute bottom-10 left-4 cursor-pointer bg-teal-400 text-white py-2 px-4 rounded-md hover:bg-teal-500 transition-colors duration-150 w-[calc(100%-32px)]"
         >
           Log Out
         </button>
