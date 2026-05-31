@@ -24,7 +24,7 @@ export default function Register() {
     <div>
       <Header isRegistered={isRegistered} setIsRegistered={setIsRegistered} />
       <div className="relative min-h-[calc(100vh)] bg-linear-to-r from-teal-400 to-teal-600">
-        <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-md w-[90%] max-w-sm">
+        <div className="absolute top-1/2 md:top-[calc(50%+40px)] left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-md w-[90%] max-w-sm">
           <h2 className="text-lg text-center font-bold mb-4">
             Register for an Account
           </h2>
@@ -176,10 +176,10 @@ export default function Register() {
           >
             Register
           </button>
-        </form>
+        </div>
                 <button
           onClick={() => navigate("/")}
-          className="absolute top-4 left-4 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-150 cursor-pointer"
+          className="absolute top-25 left-4 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-150 cursor-pointer"
         >
           <i className="fa-solid fa-arrow-left"></i>
         </button>

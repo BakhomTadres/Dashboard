@@ -119,7 +119,7 @@ export default function Login() {
         </form>
         <button
           onClick={() => navigate("/")}
-          className="absolute top-4 left-4 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-150 cursor-pointer"
+          className="absolute top-25 left-4 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-150 cursor-pointer"
         >
           <i className="fa-solid fa-arrow-left"></i>
         </button>
