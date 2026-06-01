@@ -14,7 +14,7 @@ export default function RightSideBar({
 }) {
   let navigate = useNavigate();
   return (
-    <aside className="fixed pt-6 h-[calc(100vh-64px)] top-15 w-[calc(50%-32px)] lg:w-[20%] bg-white md:px-4">
+    <aside className="fixed pt-6 h-[calc(100vh-64px)] top-15 w-[calc(75%-32px)] lg:w-[20%] bg-white md:px-4">
       {isRegistered && (
         <>
         <div className="flex flex-col lg:flex-row justify-start items-center space-x-2 p-4 bg-mauve-100">
