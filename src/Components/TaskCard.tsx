@@ -2,6 +2,7 @@ import { TasksContext } from "../TasksContext";
 import { useContext } from "react";
 import Notification from "./Notification";
 import { NotificationContext } from "../NotificationContext";
+import axios from "axios";
 
 export default function TaskCard({
   task,
@@ -9,32 +10,21 @@ export default function TaskCard({
   setShowEditTask,
 }: {
   task: any;
-  setEditingTaskId: React.Dispatch<React.SetStateAction<number | null>>;
+  setEditingTaskId: React.Dispatch<React.SetStateAction<string | null>>;
   setShowEditTask: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   let [tasks, setTasks] = useContext(TasksContext)!;
-  let [showNotification, setShowNotification, notificationType, setNotificationType] =
-    useContext(NotificationContext)!;
+  let [
+    showNotification,
+    setShowNotification,
+    notificationType,
+    setNotificationType,
+  ] = useContext(NotificationContext)!;
 
   const showNotif = (type: string) => {
     setNotificationType(type);
     setShowNotification(true);
     setTimeout(() => setShowNotification(false), 2000);
-  };
-
-  const toggleComplete = () => {
-    const updated = tasks.map((t) =>
-      t.id === task.id ? { ...t, completed: !t.completed } : t,
-    );
-    setTasks(updated);
-    localStorage.setItem("tasks", JSON.stringify(updated));
-  };
-
-  const deleteTask = () => {
-    showNotif("error");
-    const updated = tasks.filter((t) => t.id !== task.id);
-    setTasks(updated);
-    localStorage.setItem("tasks", JSON.stringify(updated));
   };
 
   const priorityColor =
@@ -67,7 +57,22 @@ export default function TaskCard({
           <div className="flex items-center gap-2">
             {/* Check */}
             <button
-              onClick={toggleComplete}
+              onClick={async () => {
+                setTasks(
+                  tasks.map((t) =>
+                    t._id === task._id ? { ...t, completed: !t.completed } : t,
+                  ),
+                );
+                const token = localStorage.getItem("token");
+                await axios.patch(
+                  `https://dashboard-backend-ebon.vercel.app/api/tasks/${task._id}`,
+                  { completed: !task.completed },{
+                headers: {
+                  Authorization: `Berear ${token}`,
+                },
+              }
+                );
+              }}
               title={task.completed ? "Mark as pending" : "Mark as completed"}
               className={`group cursor-pointer w-8 h-8 flex items-center justify-center rounded-full border-2 transition-all duration-200
                 ${
@@ -82,7 +87,7 @@ export default function TaskCard({
             {/* Edit */}
             <button
               onClick={() => {
-                setEditingTaskId(task.id);
+                setEditingTaskId(task._id);
                 setShowEditTask(true);
               }}
               title="Edit task"
@@ -93,7 +98,17 @@ export default function TaskCard({
 
             {/* Delete */}
             <button
-              onClick={deleteTask}
+              onClick={async () => {
+                showNotif("error");
+                const updated = tasks.filter((t) => t._id !== task._id);
+                setTasks(updated);
+                const token = localStorage.getItem("token")
+                await axios.delete(`https://dashboard-backend-ebon.vercel.app/api/tasks/${task._id}`,{
+                headers: {
+                  Authorization: `Berear ${token}`,
+                },
+              })
+              }}
               title="Delete task"
               className="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full border-2 border-red-400 bg-white text-red-400 transition-all duration-200 hover:bg-red-400 hover:text-white"
             >

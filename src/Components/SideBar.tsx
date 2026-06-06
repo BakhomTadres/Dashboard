@@ -16,7 +16,6 @@ export default function SideBar({
   ];
 
   return (
-    // hidden على موبايل — يظهر من md فأكبر فقط
     <aside className="absolute z-10 left-0 top-16 hidden md:flex flex-col items-center w-16 h-[calc(100vh-64px)] bg-white shadow-md py-4 gap-3">
       {items.map((item) => (
         <button

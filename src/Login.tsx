@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { RegisterContext } from "./RegisterContext";
 import { useContext } from "react";
+import axios from "axios";
 
 export default function Login() {
   let navigate = useNavigate();
@@ -76,39 +77,48 @@ export default function Login() {
           </div>
           <p className="text-sm text-red-500 mt-1">{passwordError}</p>
           <button
-            onClick={(e) => {
+            onClick={async (e) => {
               e.preventDefault();
-              if (
-                emailInput !== "" &&
-                passwordInput !== "" &&
-                emailInput.includes("@") &&
-                emailInput === localStorage.getItem("email") &&
-                passwordInput.length >= 8 &&
-                passwordInput === localStorage.getItem("password")
-              ) {
+              if (emailInput === "") {
+                return setEmailError("Please enter your email");
+              }
+              if (!emailInput.includes("@")) {
+                return setEmailError("Please enter a valid email address");
+              }
+              if (passwordInput === "") {
+                return setPasswordError("Please enter your password");
+              }
+              if (passwordInput.length < 8) {
+                return setPasswordError(
+                  "Password must be at least 8 characters long",
+                );
+              }
+
+              
+              try {
+                const res = await axios.post(
+                  "https://dashboard-backend-ebon.vercel.app/api/users/login",
+                  {
+                    email: emailInput,
+                    password: passwordInput,
+                  },
+                );
+                localStorage.setItem("token", res.data.data.token);
                 setIsRegistered(true);
+                localStorage.removeItem("tasks")
+                window.dispatchEvent(new Event("userLoggedIn"));
                 localStorage.setItem("isRegistered", "true");
                 navigate("/");
-              } else {
-                if (emailInput === "") {
-                  setEmailError("Please enter your email");
-                } else if (!emailInput.includes("@")) {
-                  setEmailError("Please enter a valid email address");
-                } else if (emailInput !== localStorage.getItem("email")) {
+              } catch (error: any) {
+                const message = error.response?.data?.message;
+               
+                if (message === "Email not found") {
                   setEmailError("Email not found");
-                } else {
+                } else if (message === "Incorrect password") {
                   setEmailError("");
-                }
-                if (passwordInput === "") {
-                  setPasswordError("Please enter your password");
-                } else if (passwordInput.length < 8) {
-                  setPasswordError(
-                    "Password must be at least 8 characters long",
-                  );
-                } else if (passwordInput !== localStorage.getItem("password")) {
                   setPasswordError("Incorrect password");
                 } else {
-                  setPasswordError("");
+                  setPasswordError("Something went wrong, try again");
                 }
               }
             }}

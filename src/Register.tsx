@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { RegisterContext } from "./RegisterContext";
 import { useContext } from "react";
+import axios from "axios";
 
 export default function Register() {
   let navigate = useNavigate();
@@ -49,7 +50,12 @@ export default function Register() {
             placeholder="John Doe"
             className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500"
             value={nameInput}
-            onChange={(e) => setNameInput(e.target.value)}
+            onChange={(e) => {
+              setNameInput(e.target.value);
+              if (nameInput != "") {
+                setNameError("");
+              }
+            }}
           />
           <p className="text-sm text-red-500 mt-1">{nameError}</p>
           <label
@@ -64,7 +70,12 @@ export default function Register() {
             placeholder="example@gmail.com"
             className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500"
             value={emailInput}
-            onChange={(e) => setEmailInput(e.target.value)}
+            onChange={(e) => {
+              setEmailInput(e.target.value);
+              if (emailInput != "" && emailInput.includes("@")) {
+                setEmailError("");
+              }
+            }}
           />
           <p className="text-sm text-red-500 mt-1">{emailError}</p>
           <label
@@ -91,7 +102,17 @@ export default function Register() {
               placeholder="Password"
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500"
               value={passwordInput}
-              onChange={(e) => setPasswordInput(e.target.value)}
+              onChange={(e) => {
+                setPasswordInput(e.target.value);
+                if (passwordInput != "") {
+                  setPasswordError(
+                    "Password must be at least 8 characters long",
+                  );
+                }
+                if (passwordInput.length >= 8) {
+                  setPasswordError("");
+                }
+              }}
             />
           </div>
           <p className="text-sm text-red-500 mt-1">{passwordError}</p>
@@ -104,7 +125,9 @@ export default function Register() {
           <div className="relative">
             <button
               type="button"
-              onClick={() => setShowPasswordRepeat(!showPasswordRepeat)}
+              onClick={() => {
+                setShowPasswordRepeat(!showPasswordRepeat);
+              }}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600 focus:outline-none"
             >
               {showPasswordRepeat ? (
@@ -119,12 +142,19 @@ export default function Register() {
               placeholder="Confirm Password"
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500"
               value={passwordRepeatInput}
-              onChange={(e) => setPasswordRepeatInput(e.target.value)}
+              onChange={(e) => {
+                setPasswordRepeatInput(e.target.value);
+                if (
+                  passwordRepeatInput != "" 
+                ) {
+                  setPasswordRepeatError("");
+                }
+              }}
             />
           </div>
           <p className="text-sm text-red-500 mt-1">{passwordRepeatError}</p>
           <button
-            onClick={(e) => {
+            onClick={async (e) => {
               e.preventDefault();
               if (
                 nameInput !== "" &&
@@ -135,10 +165,18 @@ export default function Register() {
                 passwordInput.length >= 8 &&
                 passwordInput === passwordRepeatInput
               ) {
-                localStorage.setItem("name", nameInput);
-                localStorage.setItem("email", emailInput);
-                localStorage.setItem("password", passwordInput);
+                let user = {
+                  name: nameInput,
+                  email: emailInput,
+                  password: passwordInput,
+                };
+                const res = await axios.post(
+                  "https://dashboard-backend-ebon.vercel.app/api/users/register",
+                  user,
+                );
+                localStorage.setItem("token", res.data.data.user.token);
                 setIsRegistered(true);
+                window.dispatchEvent(new Event("userLoggedIn"));
                 localStorage.setItem("isRegistered", "true");
                 navigate("/");
               } else {
@@ -177,7 +215,7 @@ export default function Register() {
             Register
           </button>
         </div>
-                <button
+        <button
           onClick={() => navigate("/")}
           className="absolute top-25 left-4 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-150 cursor-pointer"
         >

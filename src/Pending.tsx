@@ -16,7 +16,7 @@ export default function Pending() {
   let [isRegistered, setIsRegistered] = useContext(RegisterContext)!;
   let [tasks, setTasks] = useContext(TasksContext)!;
   let [showEditTask, setShowEditTask] = useState(false);
-  let [editingTaskId, setEditingTaskId] = useState<number | null>(null);
+  let [editingTaskId, setEditingTaskId] = useState<string | null>(null);
 
   let navigate = useNavigate();
   let [showAddTask, setShowAddTask] = useState(false);
@@ -37,7 +37,7 @@ export default function Pending() {
       <BottomNav active={active} setActive={setActive} />
 
       <div className="flex flex-col lg:flex-row">
-         <div className="pl-4 md:pl-20 py-25 pr-4 md:pb-6 min-h-[calc(100vh)] w-full lg:w-[80%] bg-mauve-100 overflow-y-auto">
+         <div className="pl-4 md:pl-20 py-25 pr-4 md:pb-6 min-h-[calc(100vh)] w-full lg:w-[70%] bg-mauve-100 overflow-y-auto">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800 px-2">
               Pending Tasks
@@ -89,7 +89,7 @@ export default function Pending() {
               .filter((task) => activeFilter === "all" || task.priority === activeFilter)
               .map((task) => (
                 <TaskCard
-                  key={task.id}
+                  key={task._id}
                   task={task}
                   setEditingTaskId={setEditingTaskId}
                   setShowEditTask={setShowEditTask}
@@ -101,7 +101,7 @@ export default function Pending() {
           </div>
         </div>
 
-        <div className="hidden lg:block lg:w-[20%]">
+        <div className="hidden lg:block lg:w-[30%]">
           <RightSideBar
             numTasksPending={tasks.filter((t) => !t.completed).length}
             numTasksCompleted={tasks.filter((t) => t.completed).length}
