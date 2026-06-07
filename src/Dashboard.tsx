@@ -55,7 +55,7 @@ export default function Dashboard() {
                 <button
                   onClick={() => {
                     setIsRegistered && setIsRegistered(false);
-                    localStorage.setItem("isRegistered", "false");
+                    localStorage.removeItem("token");
                     navigate("/login");
                   }}
                   className="cursor-pointer lg:ml-4 p-2 md:px-4 md:py-2 relative left-7/9 md:left-2/3 lg:left-2/3 sm:left-3/4 -translate-x-1/2 bottom-2 bg-teal-400 text-white rounded-lg transition duration-300 hover:bg-teal-600 block"

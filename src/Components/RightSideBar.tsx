@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UsersContext } from "../UsersContext";
 import { TasksContext } from "../TasksContext";
 import EditProfile from "./EditProfile";
+import axios from "axios";
 
 export default function RightSideBar({
   numTasksPending,
@@ -23,6 +24,7 @@ export default function RightSideBar({
   } = useContext(UsersContext)!;
   let [, setTasks] = useContext(TasksContext)!;
   let [showEditProfile, setShowEditProfile] = useState(false); 
+  let token = localStorage.getItem("token");
   let navigate = useNavigate();
   return (
     <>
@@ -73,7 +75,11 @@ export default function RightSideBar({
           onClick={() => {
             setIsRegistered?.(false);
             navigate("/login");
-            localStorage.setItem("isRegistered", "false");
+            axios.post("https://dashboard-backend-ebon.vercel.app/api/users/logout", {} , {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            })
             localStorage.removeItem("tasks");
             localStorage.removeItem("token");
             setTasks([]);

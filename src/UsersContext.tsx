@@ -26,7 +26,6 @@ export default function UsersContextProvider({
         },
       });
       const user = res.data.data.user;
-      localStorage.setItem("id", user._id);
       setName(user.name);
       setEmail(user.email);
     };

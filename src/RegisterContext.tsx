@@ -10,7 +10,7 @@ export default function RegisterContextProvider({
   children: React.ReactNode;
 }) {
   let [isRegistered, setIsRegistered] = useState<boolean>(
-    localStorage.getItem("isRegistered") === "true" || false,
+    localStorage.getItem("token") ? true : false
   );
   return (
     <RegisterContext.Provider value={[isRegistered, setIsRegistered]}>

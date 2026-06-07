@@ -104,6 +104,7 @@ export default function EditTask({
 
             try {
               const token = localStorage.getItem("token");
+              console.log(currentTask._id)
               await axios.patch(
                 `https://dashboard-backend-ebon.vercel.app/api/tasks/${currentTask._id}`,
                 {

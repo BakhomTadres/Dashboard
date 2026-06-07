@@ -177,7 +177,6 @@ export default function Register() {
                 localStorage.setItem("token", res.data.data.user.token);
                 setIsRegistered(true);
                 window.dispatchEvent(new Event("userLoggedIn"));
-                localStorage.setItem("isRegistered", "true");
                 navigate("/");
               } else {
                 if (nameInput === "") {

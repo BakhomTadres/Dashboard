@@ -107,7 +107,6 @@ export default function Login() {
                 setIsRegistered(true);
                 localStorage.removeItem("tasks")
                 window.dispatchEvent(new Event("userLoggedIn"));
-                localStorage.setItem("isRegistered", "true");
                 navigate("/");
               } catch (error: any) {
                 const message = error.response?.data?.message;
