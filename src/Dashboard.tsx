@@ -95,7 +95,7 @@ export default function Dashboard() {
           </div>
 
           {isLoading ? (
-            <h1>Loading</h1>
+            <h1 className="text-center h-[100%-72px] pt-20 text-2xl font-bold text-gray-800">Loading...</h1>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {isRegistered &&
