@@ -10,6 +10,8 @@ import TaskCard from "./Components/TaskCard";
 import { useNavigate } from "react-router-dom";
 import AddTask from "./Components/AddTask";
 import { UsersContext } from "./UsersContext";
+import Loader from "./Components/Loader";
+
 export default function Dashboard() {
   let [active, setActive] = useState("tasks");
   let [activeFilter, setActiveFilter] = useState("all");
@@ -95,7 +97,7 @@ export default function Dashboard() {
           </div>
 
           {isLoading ? (
-            <h1 className="text-center h-[100%-72px] pt-20 text-2xl font-bold text-gray-800">Loading...</h1>
+            <Loader />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {isRegistered &&

@@ -10,6 +10,7 @@ import TaskCard from "./Components/TaskCard";
 import AddTask from "./Components/AddTask";
 import { useNavigate } from "react-router-dom";
 import { UsersContext } from "./UsersContext";
+import Loader from "./Components/Loader";
 
 export default function Pending() {
   let [active, setActive] = useState("pending");
@@ -88,9 +89,7 @@ export default function Pending() {
           </div>
 
           {isLoading ? (
-            <h1 className="text-center h-[100%-72px] pt-20 text-2xl font-bold text-gray-800">
-              Loading...
-            </h1>
+            <Loader />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {isRegistered &&
