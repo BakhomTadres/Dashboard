@@ -9,9 +9,8 @@ import RightSideBar from "./Components/RightSideBar";
 import TaskCard from "./Components/TaskCard";
 import { useNavigate } from "react-router-dom";
 import AddTask from "./Components/AddTask";
-
+import { UsersContext } from "./UsersContext";
 export default function Dashboard() {
-
   let [active, setActive] = useState("tasks");
   let [activeFilter, setActiveFilter] = useState("all");
   let [isRegistered, setIsRegistered] = useContext(RegisterContext)!;
@@ -24,6 +23,10 @@ export default function Dashboard() {
   let navigate = useNavigate();
 
   const filters = ["all", "Low", "Medium", "High"];
+
+  let {
+    isLoading: [isLoading],
+  } = useContext(UsersContext)!;
 
   return (
     <>
@@ -91,7 +94,10 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+          {isLoading ? (
+            <h1>Loading</h1>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {isRegistered &&
               tasks
                 .filter(
@@ -115,7 +121,9 @@ export default function Dashboard() {
               </p>
             )}
           </div>
-        </div>
+        
+          )}
+          </div>
 
         {/* Right sidebar — desktop only */}
         <div className="hidden lg:block lg:w-[30%]">

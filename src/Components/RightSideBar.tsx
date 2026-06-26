@@ -72,10 +72,10 @@ export default function RightSideBar({
       )}
       {isRegistered && (
         <button
-          onClick={() => {
+          onClick={async () => {
             setIsRegistered?.(false);
             navigate("/login");
-            axios.post("https://dashboard-backend-ebon.vercel.app/api/users/logout", {} , {
+            await axios.post("https://dashboard-backend-ebon.vercel.app/api/users/logout", {} , {
               headers: {
                 Authorization: `Bearer ${token}`
               }
