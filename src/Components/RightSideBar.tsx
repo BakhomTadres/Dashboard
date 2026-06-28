@@ -22,7 +22,7 @@ export default function RightSideBar({
     name: [name, setName],
     email: [email, setEmail],
   } = useContext(UsersContext)!;
-  let [, setTasks] = useContext(TasksContext)!;
+  let [, setTasks, isLoading] = useContext(TasksContext)!;
   let [showEditProfile, setShowEditProfile] = useState(false); 
   let token = localStorage.getItem("token");
   let navigate = useNavigate();
@@ -35,8 +35,13 @@ export default function RightSideBar({
       {isRegistered && (
         <>
           <div className="flex flex-col lg:flex-row justify-start items-center space-x-2 p-4 bg-mauve-100">
-            <div onClick={() => setShowEditProfile(true)} className="flex items-center justify-center cursor-pointer w-10 h-10 p-1 rounded-full bg-teal-400 text-white font-bold text-2xl">
+            <div onClick={() => setShowEditProfile(true)} className="flex items-center justify-center cursor-pointer w-10 h-10 p-1 rounded-full bg-teal-400 text-white font-bold text-2xl relative">
               {name?.charAt(0).toUpperCase()}
+              {!isLoading && (
+                <div className="absolute right-0 -bottom-2 text-gray-800 w-[20px] h-[20px] flex items-center justify-center bg-white rounded-full">
+              <i className="fa-solid fa-pen text-xs"></i>
+              </div>
+              )}
             </div>
             <h3 className="text-lg text-center lg:text-start font-semibold text-gray-800">
               Hello,

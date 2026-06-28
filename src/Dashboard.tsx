@@ -9,14 +9,13 @@ import RightSideBar from "./Components/RightSideBar";
 import TaskCard from "./Components/TaskCard";
 import { useNavigate } from "react-router-dom";
 import AddTask from "./Components/AddTask";
-import { UsersContext } from "./UsersContext";
 import Loader from "./Components/Loader";
 
 export default function Dashboard() {
   let [active, setActive] = useState("tasks");
   let [activeFilter, setActiveFilter] = useState("all");
   let [isRegistered, setIsRegistered] = useContext(RegisterContext)!;
-  let [tasks, setTasks] = useContext(TasksContext)!;
+  let [tasks, setTasks, isLoading] = useContext(TasksContext)!;
   let [showEditTask, setShowEditTask] = useState(false);
   let [editingTaskId, setEditingTaskId] = useState<string | null>(null);
 
@@ -26,9 +25,6 @@ export default function Dashboard() {
 
   const filters = ["all", "Low", "Medium", "High"];
 
-  let {
-    isLoading: [isLoading],
-  } = useContext(UsersContext)!;
 
   return (
     <>
